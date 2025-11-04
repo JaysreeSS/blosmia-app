@@ -1,0 +1,266 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <h3>Admin Panel</h3>
+        {% if success %}
+            <div class="col-4 alert alert-success" role="alert" id="form_success">
+            User Added Successfully!
+            </div>
+        {% endif %}
+        {% if failed %}
+            <div class="col-4 alert alert-danger" role="alert" id="form_success">
+                Error While Adding User
+            </div>
+        {% endif %}
+        <div>
+            <button style="background-color: #03abff;" class="col-2 float-right btn btn-primary btn-block" data-toggle="modal" data-target="#AddUsers">Add Users</button>
+        </div>
+    <div style="margin-top:100px;">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                
+                <th scope="col">User ID</th>
+                <th scope="col">Username</th>
+                <th scope="col">email</th>
+                <th scope="col">Action</th>
+
+            </tr>
+            </thead>
+            <tbody>
+                {%for i in range(0, data_len)%}
+                <tr>
+                   
+                        <td id="td_username_{{data[i][0]}}">{{data[i][0]}}</td>
+                        <td id="td_email_id_{{data[i][0]}}">{{data[i][1]}}</td>
+                        <td id="td_type_{{data[i][0]}}">{{data[i][2]}}</td>
+                        <td>
+                            <i class="fa fa-edit user_table_action" data-toggle="modal" data-target="#Editusers" onclick="autoFillEdit('{{data[i][0]}}')" style="color:deepskyblue; font-size:24px; margin-right:15px;" aria-hidden="true"></i>
+                            <i class="fa fa-trash user_table_action" style="color:red; font-size:24px" data-toggle="modal" data-target="#deleteUserModal" onclick="deleteUser('{{data[i][0]}}')" aria-hidden="true"></i>
+                        </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+<!-- Add users-->
+<div class="modal fade" id="AddUsers" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Users</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <form class="col-12 form-horizontal"  id="user_form" method="POST" action="/admin">
+                <div class="alert alert-danger toogle" role="alert"  id="form_validate">
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="patient_id"><b>Username</b></label>
+                        <input type="text" class="form-control" id="username" placeholder="Enter Username"  name="username" required >
+                    </div>
+                    <div class="form-group col">
+                        <label for="patient_name"><b>Email Id</b></label>
+                        <input type="text" class="form-control" id="user_email" name="user_email" placeholder="Enter email" required >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="patient_email"><b>Password</b></label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter email" required >
+                    </div>
+                    <div class="form-group col">
+                        <label for="user_type"><b>Type</b></label>
+                        <select class="dropdown form-control" name="user_type" id="user_type" required>
+                            <option value="dummy">Select User Type</option>
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label for="patient_age"><b>Confirm Password</b></label>
+                        <input type="password" class="form-control" id="confirm_password" name="patient_age" required>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+        <button style="background-color:#03abff ;color: black;" type="button" class="btn btn-primary" data-dismiss="modal" >Cancel</button>
+        <button style="background-color:#03abff ;color: black;" type="button" class="btn btn-success" onclick="validateform()">Add User</button>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- Edit Users-->
+<div class="modal fade" id="Editusers" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit User Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="alert alert-danger toogle" role="alert"  id="edit_Validation">
+        </div>
+        <div class="modal-body">
+            <form class="col-12 form-horizontal"  id="edit_user_form" method="POST" action="/admin">
+                <div class="alert alert-danger toogle" role="alert"  id="form_validate">
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="username"><b>Username</b></label>
+                        <input type="text" class="form-control" id="edit_username_id" placeholder="Enter Username"  name="edit_username"  disabled >
+                        <input type="hidden" class="form-control" id="edit_username" name="edit_username" >
+                    </div>
+                    <div class="form-group col">
+                        <label for="user_email"><b>Email Id</b></label>
+                        <input type="text" class="form-control" id="edit_user_email" name="edit_user_email" placeholder="Enter email" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="user_type"><b>Type</b></label>
+                        <select class="dropdown form-control" name="edit_user_type" id="edit_user_type" required>
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+        <button style="background-color:#03abff ;color: black;" type="button" class="btn btn-primary" data-dismiss="modal" >cancel</button>
+        <button style="background-color:rgba(255, 253, 119, 0.844) ;color: black;" type="button" class="btn btn-success" onclick="editUserButton()">Save Changes</button>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- Delete Users-->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Delte User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="alert alert-danger toogle" role="alert"  id="delete_Validation">
+        </div>
+        <div class="modal-body" id="DeleteUserModalContent">
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" >cancel</button>
+        <button type="button" class="btn btn-danger" onclick="deleteUserButton()">Delete</button>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+
+<script>
+
+    function editUserButton(){
+        if('{{user}}'==document.getElementById("edit_username_id").value){
+            document.getElementById("edit_Validation").classList.remove("toogle");
+            document.getElementById("edit_Validation").innerHTML = "Signed In User Type Cannot be Changed!";
+        }else{
+            document.getElementById("edit_user_form").submit();
+        }
+    }
+
+
+    function deleteUserButton(){
+        if('{{user}}'==document.getElementById("delete_username").value){
+            document.getElementById("delete_Validation").classList.remove("toogle");
+            document.getElementById("delete_Validation").innerHTML = "Signed In User Cannot Be deleted!";
+        }else{
+            document.getElementById("DeleteUserForm").submit();
+        }
+        
+    }
+    function deleteUser(username){
+        document.getElementById("delete_Validation").classList.add("toogle");
+        document.getElementById("DeleteUserModalContent").innerHTML="Delete <b>"+username+"</b> Permanently"+'<form id="DeleteUserForm" method="POST" action="/admin"> <input type="hidden" id="delete_username" name="delete_username"> </form>'
+        document.getElementById("delete_username").value=username;
+    }
+    function autoFillEdit(username){
+        username=document.getElementById ( "td_username_"+username ).innerText;
+        email_id=document.getElementById ( "td_email_id_"+username ).innerText;
+        type=document.getElementById ( "td_type_"+username).innerText;
+        console.log(username)
+        console.log(email_id)
+        console.log(type)
+        document.getElementById("edit_username_id").value = username;
+        document.getElementById("edit_user_email").value = email_id;
+        document.getElementById("edit_user_type").value = type;
+        document.getElementById("edit_Validation").classList.add("toogle");
+        document.getElementById("edit_username").value=document.getElementById("edit_username_id").value;
+
+    }
+    function validateform(){  
+        const username = document.getElementById("username").value;
+        const user_email = document.getElementById("user_email").value;
+        const password = document.getElementById("password").value;
+        const confirm_password = document.getElementById("confirm_password").value;      
+        const user_type = document.getElementById("user_type").value;
+
+        if (username.length < 2 || username.length > 20) 
+        {
+            document.getElementById("form_validate").classList.remove("toogle");
+            document.getElementById("form_validate").innerHTML = "Username is too Short or too Long!";
+            name.focus();
+            return false;
+
+        }
+        else if (!user_email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) 
+        {
+            document.getElementById("form_validate").classList.remove("toogle");
+            document.getElementById("form_validate").innerHTML = "Please enter a valid email!";
+            email.focus();
+            return false;
+
+        }
+        else if (user_type=="dummy") 
+        {
+            document.getElementById("form_validate").classList.remove("toogle");
+            document.getElementById("form_validate").innerHTML = "Please Select User Type";
+            bg.focus();
+            return false;
+
+        }  
+
+        else if (password.length < 6 || password.length > 15) 
+        {
+            document.getElementById("form_validate").classList.remove("toogle");
+            document.getElementById("form_validate").innerHTML = "Password is too short or too Long";
+            address.focus();
+            return false;
+        }
+        else if (password!=confirm_password) 
+        {
+            document.getElementById("form_validate").classList.remove("toogle");
+            document.getElementById("form_validate").innerHTML = "Password Not Matched!";
+            bg.focus();
+            return false;
+
+        }  
+         
+        else
+        {
+            document.getElementById("form_validate").classList.add("toogle");
+            document.getElementById("user_form").submit();
+        }
+     }
+</script>
+
+{% endblock content %}

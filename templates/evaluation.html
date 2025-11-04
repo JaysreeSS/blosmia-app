@@ -1,0 +1,83 @@
+{%extends "layout.html" %}
+{% block content %}
+<style>
+    div.content {
+  margin-left: 250px;
+  padding: 20px 16px;
+  background: url(../images/backgroud.png)  center center ;
+  background-size: cover;
+  height: 200vh;
+  background-color:  rgba(161, 210, 250, 0.645);
+}
+
+</style>
+<div>
+  <h3>Evaluation of Blood Cells</h3>
+  <form class="col-4 form-horizontal" style="margin-top: 50px;" id="patient_id_search" method="POST" action="http://127.0.0.1:5000/evaluate">
+    {% if failed %}
+        <div class="alert alert-warning" role="alert" id="form_success">
+            Patient Id Not Found!
+        </div>
+    {% endif %}
+    <div class="form-group col">
+      <label for="patient_id"><b>Patient ID</b></label>
+      <input type="text" class="form-control" id="patient_id" name="patient_id" placeholder="Enter Patient Id"  required >
+      
+  </div>   
+  <div class="form-group col">
+      <button type="submit" class="btn btn-primary ">Search</button>
+  </div> 
+</form>
+  {% if success %}
+    <div class="col-8" style="margin-left: 15px;">
+        <table class="table" style="margin-top: 15px; border-width:2px">
+            <thead  class="thead-dark">
+            <tr>    
+                <th scope="col">Patient Id</th>
+                <th scope="col">Patient Name</th>
+                <th scope="col">Age</th>
+                <th scope="col">Gender</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {%for i in range(0, 4)%}
+                <td>{{data[i]}}</td>
+                {%endfor%}
+
+            </tr>
+            </tbody>
+        </table>
+      </div>
+</div>
+<div class="col-11" style="margin-left: 30px;">
+  <br>
+  <h4>Detailed Test Results</h4>
+</div>
+
+<div class="row">
+  {%for i in range(0, rbcDataLen)%}
+      <div class="col-3" style="margin-top:15px;">
+          <div class="card">
+              <div class="card-body">
+              <h5 class="card-title">Blood Test Report {{report[i][0]}}</h5>
+              <p class="card-text">Date: {{report[i][1]}}</p>
+              <form  method="POST" action="http://127.0.0.1:5000/detailedrep">
+  
+                  <input type="hidden" id="patient_id" name="patient_id" value="{{data[0]}}"> 
+                  <input type="hidden" id="report_id" name="report_id" value="{{report[i][0]}}">
+                  <input type="hidden" id="test_date" name="test_date" value="{{report[i][1]}}">
+                  <button type="submit" class="btn btn-info ">View Results</button>
+              </form>
+              </div>
+          </div>
+      </div>
+  {%endfor%}
+</div>
+</div>
+
+
+{% endif %}
+</div>
+{% endblock content %}

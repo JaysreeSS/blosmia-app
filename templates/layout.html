@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='/styles/main.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <title>Blosmia</title>
+
+    <link rel="icon" href="{{ url_for('static',filename='/images/favicon.png')}}">
+
+  
+</head>
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.login-page {
+  width: 360px;
+  padding: 3% 0 0;
+  margin: auto;
+}
+.form {
+  position: relative;
+  z-index: -2;
+  background: yellow;
+  max-width: 360px;
+  margin: 0 auto 200px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  font-weight: 600;
+  outline: 0;
+  background: #01074b;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+
+.login_body {
+  background: #76b852; /* fallback for old browsers */
+  background: rgb(141,194,111);
+  background: linear-gradient(90deg, rgb(4, 1, 46) 0%, rgb(0, 0, 0) 50%);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;      
+}
+
+.logo{
+  height: 15vh;
+}
+
+/* The side navigation menu */
+.sidebar {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-weight: bold;
+  margin: 0;
+  padding: 0;
+  width: 250px;
+  background-color: rgba(255, 255,255);
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+  box-shadow: 2px 2px rgba(0,0,0,0.12);
+}
+
+/* Sidebar links */
+.sidebar a {
+  display: block;
+  color: black;
+  padding: 16px;
+  text-decoration: none;
+}
+
+/* Active/current link */
+.sidebar a.active {
+  background-color: #03abff;
+  color: white;
+}
+
+/* Links on mouse-over */
+.sidebar a:hover:not(.active) {
+  background-color: rgb(131, 191, 219);
+  color: white;
+}
+
+.sideBarCenter{
+  margin-left:auto; 
+  margin-right:auto; 
+  display: block;
+}
+
+div.content {
+  margin-left: 250px;
+  padding: 20px 16px;
+ /*background: url(../images/backgroud.png)  center center ;*/
+ background: radial-gradient( #FFFFFF,#a1d2fa);
+  background-size: cover;
+  height: 200vh;
+  background-color:  rgba(161, 210, 250, 0.645);
+}
+
+h3{
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-weight: bold;
+    }
+/* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+
+
+.toogle{
+  display: none !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: darkgrey;
+}
+
+::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 10px rgba(0, 162, 255,1);
+}
+
+.user_table_action:hover{
+  cursor: pointer;
+}
+</style>
+<body  onload="AddActiveClass()">
+    <!-- The sidebar -->
+    <div class="sidebar">
+        <img class="logo sideBarCenter" src="{{ url_for('static',filename='/images/logo.jpg')}}">
+        <center><h3 style="padding-left: 5px; padding-bottom:16px; padding-top: 5px; color:black">BLOSMIA</h3></center>
+        <a id="dashboard" href="http://127.0.0.1:5000/dash">Dashboard</a>
+        <a id="patients"  href="http://127.0.0.1:5000/patients">Patients</a>
+        <a id="doctors" href="http://127.0.0.1:5000/doctors">Doctors</a>
+        <a id="bst" href="http://127.0.0.1:5000/bst">Blood Smear Test</a>
+        <a id="evaluate" href="http://127.0.0.1:5000/evaluate">Evaluation</a>
+        <a id="final" href="http://127.0.0.1:5000/final">Patients Final Report</a>
+        <a id="admin" href="http://127.0.0.1:5000/admin">Admin Panel</a>
+        <a id="retrain" href="http://127.0.0.1:5000/retrain1">Retrain</a>
+        <a id="logout" href="http://127.0.0.1:5000/dropsession">Logout</a>
+    </div>
+    
+    <!-- Page content -->
+    <div class="content">
+    {% block content %}
+    {% endblock %}
+    </div>
+	
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script>
+function AddActiveClass() {
+ 
+  document.getElementById("{{ active_class }}").classList.add("active");
+}
+
+</script>
+</body>
+</html>

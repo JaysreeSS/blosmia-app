@@ -1,0 +1,208 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    .back{
+        background-color: #a3cef3;
+        background-size: cover;
+
+    }
+    /*.card{
+        height: 125px;
+        width: 100px;
+    }*/
+    .card-title
+    {
+        font-size: 3px;
+        font-weight: bold;
+    } 
+    .card:hover
+    {
+        transform: scale(1.8);
+        z-index: 2;
+    }
+    .btn
+    {
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+</style>
+<body class="back">
+<div>
+    <h3>Detailed Test Report</h3>
+    {% if success %}
+    <br><br>
+    <center><h4>Overall Test Results</h4></ceter>
+    <table>
+        <tr>
+            <td>
+    
+    <canvas id="myChart" style="width:100%;height:100%;"></canvas></td>
+<!--</div>
+<div class="col-8" style="width: 300%;height:300%;">-->
+    <!--<h4>Overall Test Results</h4>-->
+    <br>
+    <td><canvas id="myChart2" style="width:100%;height:100%;"></canvas></td>
+    </tr>
+    </table>
+
+
+    <div class="container">
+        <div class="row">
+           
+                {%for i,images in image_list%}
+            <div class="col-sm-1">
+                <br>
+                <div class="card shadow" style="width: 65px;">
+                   
+                        <img src="data:image/png;base64,{{images}}"  class="card-img-top" height="50" width="50"> 
+                        <div class="card-body text-center" style="height: 70px;">
+                            <b><p style="font-size:7px" class="card-title">{{blob_name[i]}}</p></b>
+                            <a class="btn btn-primary btn-sm " style="top: 80%; left:50%; transform: translateX(-30%) translateY(-30%);" data-toggle="modal" data-target="#editDataModal" onclick="editReport('{{blob_ids[i]}}')">Edit</a>
+                        </div>
+                    </div>
+                </div>    
+                {%endfor%}
+            
+            <br><br>
+        </div>
+    </div>
+    <!-- Modal Edit-->
+    <div class="modal fade" id="editDataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Edit Test Results</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form class="col-12 form-horizontal" id="editReportForm" method="POST" action="http://127.0.0.1:5000/detailedrep">
+                    <input type="hidden" id="edit_blob_id" name="edit_blob_id">
+                    <div class="form-group col">
+                        <label for="rbctype"><b>Type</b></label>
+                        <select class="dropdown form-control" name="rbctype" id="rbctype" required>
+                            
+                            <option value="1">Basophil</option>
+                            <option value="2">double rbc</option>
+                            <option value="3">Eosinophil</option>
+                            <option value="4">Lymphocyte</option>
+                            <option value="5">Monocyte</option>
+                            <option value="6">Neutrophil</option>
+                            <option value="7">single rbc</option>
+                            <option value="8">triple rbc</option>
+                        </select>
+                        
+                        <input type="hidden" id="iamge_id" name="image_id" value="{{image_id}}">
+                        <input type="hidden" id="test_date" name="test_date" value="{{data[5]}}">
+                        <input type="hidden" id="report_id" name="report_id" value="{{repid}}">
+                        <input type="hidden" id="patient_id" name="patient_id" value="{{data[0]}}">
+                        
+                    </div>   
+                </form>   
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">cancel</button>
+            <button type="button" class="btn btn-success" onclick="submitreport('editReportForm')">Save changes</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+{% endif %}
+
+</div>
+</body>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"> </script>
+<script>
+    /*var xValues = ["Acanthocytes","Basophil","Eosinophil","Lymphocyte","Monocyte","Neutrophil","Normal RBC","Stomachocytes","Tear Drop"];*/
+    var xValues = ["Basophil","Eosinophil","Lymphocyte","Monocyte","Neutrophil"];
+   
+    var yValues=((("{{wbc_type}}").replace("[","")).replace("]","")).split(",");
+    /*var barColors = ["red", "green","purple","orange","blue", "pink","yellow","cyan","brown"];
+    */
+    var barColors = ["red", "green","purple","orange","blue"];
+    new Chart("myChart", {
+        type: "bar",
+
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text:'WBC Report'
+            },
+            legend: {
+                display: false //This will do the task
+            },
+            scales: {
+                yAxes: [{
+                    display: true,
+                    stacked: true,
+                    ticks: {
+                        min: 0, // minimum value
+                    }
+                }]
+            }
+        }
+    });
+
+
+
+    var x2Values = ["Double rbc","Single rbc","Triple rbc"];
+   
+    var y2Values=((("{{rbc_type}}").replace("[","")).replace("]","")).split(",");
+
+    var barColors = ["pink", "yellow","cyan"];
+    new Chart("myChart2", {
+        type: "bar",
+
+        data: {
+            labels: x2Values,
+            datasets: [{
+                backgroundColor: barColors,
+                data: y2Values
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text:"RBC Report"
+            },
+            legend: {
+                display: false //This will do the task
+            },
+            scales: {
+                yAxes: [{
+                    display: true,
+                    stacked: true,
+                    ticks: {
+                        min: 0, // minimum value
+                    }
+                }]
+            }
+        }
+    });
+
+
+
+    function editReport(blob_id){
+      var a=  document.getElementById('edit_blob_id').value=blob_id;
+      console.log(a)
+
+    }
+    
+    async function submitreport(form_id){
+       document.getElementById(form_id).submit();
+        
+    }
+    
+</script> 
+{% endblock content %}

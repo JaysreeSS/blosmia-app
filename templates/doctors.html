@@ -1,0 +1,299 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+body{
+        background: radial-gradient(#FFFFFF,#87cefa);
+    }
+    .btnctrl{
+        margin-top:05%;
+    }
+    .tblcont{
+        margin-top: 05%;
+    }
+    
+.table {
+	width:100%;
+	/*border:1px solid aqua;*/
+}
+
+.table-header {
+	display:block;
+	width:100%;
+	background:#a1d2fa;
+	padding: 0;
+}
+
+.table-row {
+	display:flex;
+	width:100%;
+	
+}
+
+.table-data, .header__item {
+	flex: 1 1 20%;
+	text-align:center;
+}
+
+/*form css*/
+.modal-box{
+  top: 40%;
+  opacity: 0;
+  visibility: hidden;
+  background: white;
+  height: auto;
+  width: 220px;
+  padding: 18px 10px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 30px rgba(0,0,0,.2);
+}
+
+.start-btn.show-modal{
+  opacity: 0;
+  visibility: hidden;
+}
+.modal-box.show-modal{
+  top: 50%;
+  opacity: 1;
+  visibility: visible;
+  transition: .4s;
+}
+.modal-box .fa-times{
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #0569d4;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  margin: 10px;
+
+  color: white;
+  font-size: 18px;
+  border-radius: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+.fa-times:hover{
+  font-size: 22px;
+}
+
+
+.form_container{
+
+  background: #fff;
+  padding: 30px;
+  margin-top: 20px;
+  border-radius: 3px;
+}
+
+.form_container .form_item{
+  margin-bottom: 25px;
+}
+
+.form_container .form_wrap.form_grp{
+  display:flex;
+}
+
+.form_container .form_wrap.form_grp .form_item{
+  width: 50%;
+}
+
+.form_container .form_wrap.form_grp .form_item:first-child{
+  margin-right: 4%;
+}
+
+.form_container .form_item label{
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form_container .form_item input,
+.form_container .form_item select{
+  width: 50%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #dadce0;
+  border-radius: 3px;
+}
+ 
+.form_container .btn input[type="submit"]{
+  background: #6271f0;
+  border: 1px solid #6271f0;
+  padding: 10px;
+  width: 100%;
+  border-radius: 3px;
+  cursor: pointer;
+  color: #fff;
+}
+</style>
+<div>
+    <h3>Doctor Details</h3>
+    {% if success %}
+      <div class="col-4 alert alert-success" role="alert" id="form_success">
+      Doctor Data Added Successfully!
+      </div>
+  {% endif %}
+  {% if failed %}
+      <div class="col-4 alert alert-danger" role="alert" id="form_success">
+          Error While Adding Data
+      </div>
+  {% endif %}
+</div>
+<div>
+    <div class="col-10">
+        <div class="btnctrl">
+            <a class="btn btn-primary" data-toggle="modal" data-target="#AddDoctors">Add Doctors</a>
+        </div>
+    <div style="margin-top:100px;">
+        <table class="table">
+            <thead class="thead-dark" >
+            <tr>
+                <th scope="col">Doctor Id</th>
+                <th scope="col">Doctor Name</th>
+                <th scope="col">Designation</th>
+                <th scope="col">Department</th>
+                <th scope="col">Email Id</th>
+                <th scope="col">Phone No</th>
+                <th scope="col">Hosipital Name</th>
+            </tr>
+            </thead>
+            <tbody>
+                {%for i in range(0, data_len)%}
+                <tr>
+                    {%for j in range(0, 7)%}
+                        <td>{{data[i][j]}}</td>
+                    {%endfor%}
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="AddDoctors" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Add Doctors Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form class="col-12 form-horizontal"  id="doctor_form" method="POST" action="http://127.0.0.1:5000/doctors">
+                    <div class="alert alert-danger toogle" role="alert"  id="form_validate">
+                    </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="doc_id"><b>Doctor Id</b></label>
+                            <input type="text" class="form-control" id="doc_id" name="doc_id" placeholder="Doctor Id"  required>
+                        </div>
+                        <div class="form-group col">
+                            <label for="doc_name"><b>Doctor Name</b></label>
+                            <input type="text" class="form-control" id="doc_name" name="doc_name" placeholder="Doctor's Full Name" required >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="doc_des"><b>Designation</b></label>
+                            <input type="text" class="form-control" id="doc_des" name="doc_des" placeholder="Enter Designation" required >
+                        </div>
+                        <div class="form-group col">
+                            <label for="doc_dep"><b>Department</b></label>
+                            <input type="text" class="form-control" id="doc_dep" name="doc_dep" placeholder="Enter Department" required >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="doc_email"><b>Email Id</b></label>
+                            <input type="email" class="form-control" id="doc_email" name="doc_email" placeholder="Enter the Doctor's Email_id" required>
+                        </div>
+                        <div class="form-group col">
+                            <label for="doc_phnno"><b>Doctor's Phone No</b></label>
+                            <input type="text" class="form-control" name="doc_phnno" id="doc_phnno" placeholder="Enter Doctor's Phone No"required>
+                        </div>
+                    </div>
+
+                        <div class="row">
+                          <div class="form-group col">
+                            <label for="doc_hospital"><b>Hospital Name</b></label>
+                            <input type="text" class="form-control" id="doc_hospital" name="doc_hospital" placeholder="Enter Doctor's Hosipital Name" required >
+                          </div>
+      
+                      </div>
+                      <div class="modal-footer">
+                        <button style="background-color:#03abff ;color: black;" type="submit" class="btn btn-primary" data-dismiss="modal" >Cancel</button>
+                        <button style="background-color:#03abff ;color: black;" type="submit" class="btn btn-success">Add Doctor</button>
+                        </div>
+                </form>
+            </div>
+            
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+        function validateform(){  
+            const doc_id = document.getElementById("doc_id").value;
+            const doc_name = document.getElementById("doc_name").value;
+            const doc_des = document.getElementById("doc_des").value;
+            const doc_dep = document.getElementById("doc_dep").value;
+            const doc_email = document.getElementById("doc_email").value;      
+            const doc_phnno = document.getElementById("doc_phnno").value;
+            const doc_hospital = document.getElementById("doc_hospital").value;
+                       
+            if (doc_name.length < 2 || doc_name.length > 30) 
+            {
+                document.getElementById("form_validate").classList.remove("toogle");
+                document.getElementById("form_validate").innerHTML = "Name is too Short or too Long!";
+                name.focus();
+                return false;
+    
+            }
+            if(doc_des.length<2||doc_des.length>30)
+            {
+                document.getElementById("form_validate").classList.remove("toogle");
+                document.getElementById("form_validate").innerHTML = "Name is too Short or too Long!";
+                des.focus();
+                return false;
+            }
+            else if (!doc_email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) 
+            {
+                document.getElementById("form_validate").classList.remove("toogle");
+                document.getElementById("form_validate").innerHTML = "Please enter a valid email!";
+                email.focus();
+                return false;
+    
+            }
+            else if (!doc_phnno.match(/^[1-9][0-9]{9}$/)) 
+            {
+                document.getElementById("form_validate").classList.remove("toogle");
+                document.getElementById("form_validate").innerHTML = "Invalid Mobile Number";
+                mobile.focus();
+                return false;
+    
+            }
+            else if (patient_address.length < 2 || patient_address.length > 250) 
+            {
+                document.getElementById("form_validate").classList.remove("toogle");
+                document.getElementById("form_validate").innerHTML = "Address is too short or too Long";
+                address.focus();
+                return false;
+            }
+            else if (patient_bloodgroup=="dummy") 
+            {
+                document.getElementById("form_validate").classList.remove("toogle");
+                document.getElementById("form_validate").innerHTML = "Please Select a Blood Group!";
+                bg.focus();
+                return false;
+    
+            }  
+             
+            else
+            {
+                document.getElementById("form_validate").classList.add("toogle");
+                document.getElementById("patient_form").submit();
+            }
+         }
+    </script>
+{% endblock content %}

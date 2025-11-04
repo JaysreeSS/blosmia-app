@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Blobs</title>
+</head>
+<body>
+    <h1>All Blobs</h1>
+    <div>
+        {% for blob in blob_files %}
+            <img src="{{ blob.data }}" alt="Blob {{ blob.id }}">
+        {% endfor %}
+    </div>
+</body>
+</html>

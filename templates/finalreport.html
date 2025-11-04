@@ -1,0 +1,161 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    h3 {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-weight: bold;
+    }
+    .table {
+        width: 120%;
+        height: -2px;
+    }
+    .tab {
+        margin-bottom: -10px;
+        font-size: larger;
+    }
+    .button2 {
+        background-color: #008CBA;
+        border-radius: 15px;
+    } 
+</style>
+<div>
+    <h3>Final Blood Report</h3>
+</div>
+<form class="col-4 form-horizontal" style="margin-top: 50px;" id="patient_id_search" method="POST" action="http://127.0.0.1:5000/final">
+    {% if failed %}
+        <div class="alert alert-danger" role="alert" id="form_success">
+            Please enter valid Patient ID and Date.
+        </div>
+    {% endif %}
+    {% if nodata %}
+    <div class="alert alert-warning" role="alert" id="form_success">
+        No report available for the selected date for this patient.
+    </div>
+    {% endif %}
+    {% if predict %}
+        <div class="alert alert-success" role="alert" id="form_success">
+            Report Generated Successfully!
+        </div>
+    {% endif %}
+    {% if notpredict %}
+        <div class="alert alert-danger" role="alert" id="form_success">
+            Error While Generating the Report!
+        </div>
+    {% endif %}
+    <div class="form-group col">
+        <label for="patient_id"><b>Patient ID</b></label>
+        <input type="text" class="form-control" id="patient_id" name="patient_id" placeholder="Enter Patient Id" required >
+        <label for="repid"><b>report id</b></label>
+        <input type="text" class="form-control" id="repid" name="repid" required >
+    </div>   
+    <div class="form-group col">
+        <button type="submit" class="btn btn-primary ">Search</button>
+    </div> 
+</form>    
+{% if success %}
+
+<br><br>
+<form method="get" action="{{ url_for('generate_invoice_pdf', invoice_id=data[0]) }}">
+<div class="col-6" style="font-size: larger; width: 62%;"  >
+  <table class="table" style="margin-top: -100px; margin-left: 439px;margin-bottom: 18px;border: 3px solid black;background-color: white;">
+      <thead  class="thead-dark" >
+      <tr style="border: 1px solid silver;">      
+          <tr >
+          <th style="background-color:white ; color: black;border-style: none;" scope="col">Patient Id : </th>
+          <td>{{data[0]}}</td>
+          <th style="background-color:white ; color: black;border-style: none" scope="col">Patient Name : </th>
+          <td>{{data[1]}}</td>
+      </tr>
+          <th style="background-color:white ; color: black;border-style: none" scope="col">Age : </th>
+          <td>{{data[6]}}</td>
+          <th style="background-color:white ; color: black;border-style: none" scope="col">Gender : </th>
+          <td>{{data[4]}}</td>
+      </tr>
+
+      </thead>
+      </table>
+      </div>
+      
+      
+    <table class="table" style="margin-left: 454px;margin-top: -43px;width: 57%;align-items:center; margin-bottom :20rem;border: 2px solid black ;background-color: white;">
+        <tr>
+          <th></th>
+          <th>Test Name</th>
+          <th>Result</th>
+          <th>Normal Range</th>
+          <th>Differential Count %</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td>Total  RBC Count</td>
+          <td>{{ "{:.2f}".format(( data1[6]  + data1[1] + data1[7]) ) }}</td>
+          <td>N/A</td>
+          <td>N/A</td>
+        </tr>
+        
+
+          <br>
+          <tr>
+            <td rowspan="5" style="font-weight: bold;">WBCs</td>
+            <td>Basophil</td>
+            <td>{{ data1[0] }}</td>
+            <td>0-2</td>
+            {% if data1[0]  + data1[2] + data1[3] + data1[4]+data1[5] != 0 %}
+                <td>{{ "{:.2f}".format((data1[0] / (data1[0]  + data1[2] + data1[3] + data1[4]+data1[5])) * 100) }}%</td>
+            {% else %}
+                <td>N/A</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>Eosinophil</td>
+            <td>{{ data1[2] }}</td>
+            <td>1-6</td>
+            {% if data1[0]  + data1[2] + data1[3] + data1[4]+data1[5] != 0 %}
+                <td>{{ "{:.2f}".format((data1[2] / (data1[0]  + data1[2] + data1[3] + data1[4]+data1[5])) * 100) }}%</td>
+            {% else %}
+                <td>N/A</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>Lymphocyte</td>
+            <td>{{ data1[3] }}</td>
+            <td>20-45</td>
+            {% if data1[0]  + data1[2] + data1[3] + data1[4]+data1[5] != 0 %}
+                <td>{{ "{:.2f}".format((data1[3] / (data1[0]  + data1[2] + data1[3] + data1[4]+data1[5])) * 100) }}%</td>
+            {% else %}
+                <td>N/A</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>Monocyte</td>
+            <td>{{ data1[4] }}</td>
+            <td>2-10</td>
+            {% if data1[0]  + data1[2] + data1[3] + data1[4]+data1[5] != 0 %}
+                <td>{{ "{:.2f}".format((data1[4] / (data1[0]  + data1[2] + data1[3] + data1[4]+data1[5])) * 100) }}%</td>
+            {% else %}
+                <td>N/A</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>Neutrophil</td>
+            <td>{{ data1[5] }}</td>
+            <td>40-70</td>
+            {% if data1[0]  + data1[2] + data1[3] + data1[4]+data1[5] != 0 %}
+                <td>{{ "{:.2f}".format((data1[5] / (data1[0]  + data1[2] + data1[3] + data1[4]+data1[5])) * 100) }}%</td>
+            {% else %}
+                <td>N/A</td>
+            {% endif %}
+        </tr>
+        
+        
+    </table>
+    <center><input type="hidden" name="patient_id" value="{{data[0]}}">
+    <input type="submit" class="btn btn-primary"value="Generate Report"></center>
+</form>
+</div> 
+
+
+
+{% endif %}
+
+{% endblock content %}

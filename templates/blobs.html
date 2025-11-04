@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blobs for Patient {{ patient_id }}</title>
+</head>
+<body>
+    <h1>Blobs for Patient {{ patient_id }}</h1>
+    {% if blobs %}
+        <ul>
+            {% for blob in blobs %}
+                <li>{{ blob.blob_image }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No blobs found for this patient.</p>
+    {% endif %}
+</body>
+</html>

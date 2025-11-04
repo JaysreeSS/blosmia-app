@@ -1,0 +1,141 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+
+<style>
+    /* Content Container */
+    div.content {
+        margin-left: 250px;
+        padding: 20px 16px;
+        background: url(../images/backgroud.png) center center;
+        background-size: cover;
+        height: 200vh;
+        background-color: rgba(161, 210, 250, 0.645);
+    }
+
+    /* Modal Styling */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+        padding-top: 60px;
+        animation: fadeIn 0.5s;
+    }
+
+    /* Animation for fade-in */
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    /* Modal Content Styling */
+    .modal-content {
+        background-color: #ffffff;
+        margin: 5% auto;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 80%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .modal-content p {
+        font-size: 18px;
+        color: #333;
+    }
+
+    /* Button Container */
+    .button-container {
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        margin: 0 10px;
+        cursor: pointer;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .btn-yes {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-no {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-yes:hover {
+        background-color: #218838;
+    }
+
+    .btn-no:hover {
+        background-color: #c82333;
+    }
+
+    /* Close Modal Button */
+    .close-btn {
+        color: white;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        cursor: pointer;
+    }
+</style>
+<h1>RETRAIN</h1>
+<div>
+    <h4><label for="trainbutton">Click here to train:</label></h4>
+    <button onclick="showModal()" class="btn btn-yes">Train</button>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <p>Training for the first time</p>
+            <div class="button-container">
+                <a href="http://127.0.0.1:5000/retrain2"><button class="btn btn-yes">Yes</button></a>
+                <a href="http://127.0.0.1:5000/retrain32"><button class="btn btn-no">No</button></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show the modal
+        function showModal() {
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        // Close the modal
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+        // Close the modal if clicked outside
+        window.onclick = function (event) {
+            var modal = document.getElementById("myModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</div>
+
+{% endblock content %}

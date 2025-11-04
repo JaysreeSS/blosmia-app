@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+
+        <style>
+            
+           
+            div.content {
+  margin-left: 250px;
+  padding: 20px 16px;
+  background: url(../images/backgroud.png)  center center ;
+  background-size: cover;
+  height: 200vh;
+  background-color:  rgba(161, 210, 250, 0.645);
+            }
+        </style>
+
+        <div>
+            <center>
+                <h2>Re-Training Data</h2>
+                <form action="http://127.0.0.1:5000/modelretrain" method="post" enctype="multipart/form-data">
+                    <input type="submit" value="PUSH TO TABLE" >
+                    <br><br>
+                 
+                  
+                </form>
+                <form action="http://127.0.0.1:5000/modelretrain2" method="post" enctype="multipart/form-data">
+                    <input type="submit" value="retrain" >
+                    <br><br>
+                 
+                  
+                </form>
+            </center>
+        </div>
+
+{% endblock content %}

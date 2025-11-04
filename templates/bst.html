@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    .tab {
+        margin-bottom: -10px;
+        font-size: larger;
+    }
+    div.content {
+        margin-left: 250px;
+        padding: 20px 16px;
+        background: url(../images/backgroud.png) center center;
+        background-size: cover;
+        height: 100vh;
+        background-color: rgba(161, 210, 250, 0.645);
+    }
+
+    /* Styling for stopwatch */
+    #stopwatch {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        font-family: Arial, sans-serif;
+        font-size: 1.5em;
+        background-color: #fff;
+        padding: 10px;
+        border: 2px solid #03abff;
+        border-radius: 5px;
+    }
+    #stopwatch button {
+        margin: 5px;
+    }
+</style>
+<div>
+    <h3>Blood Smear Test</h3>
+
+    <form class="col-4 form-horizontal" style="margin-top: 50px;" id="patient_id_search" method="POST" action="http://127.0.0.1:5000/bst">
+        {% if failed %}
+            <div class="alert alert-warning" role="alert" id="form_success">
+                Patient Id Not Found!
+            </div>
+        {% endif %}
+        {% if predict %}
+            <div class="alert alert-success" role="alert" id="form_success">
+                Report Generated Successfully!
+            </div>
+        {% endif %}
+        {% if notpredict %}
+            <div class="alert alert-danger" role="alert" id="form_success">
+                Error While Generating the Report!
+            </div>
+        {% endif %}
+        <div class="form-group col">
+            <label for="patient_id"><b>Patient ID</b></label>
+            <input type="text" class="form-control" id="patient_id" name="patient_id" placeholder="Enter Patient Id" required>
+        </div>
+        <div class="form-group col">
+            <button style="background-color: #03abff;" type="submit" class="btn btn-primary" onclick="startStopwatch()">Search</button>
+        </div>
+    </form>
+    {% if success %}
+    <div class="col-6" style="font-size: larger;margin-left: 50px;font-weight: bold; padding-top: 3rem;">
+        <table class="table" style="margin-top: 15px;margin-left: 100px; font-weight: bold;">
+            <thead class="thead-dark">
+            <tr>
+                <tr scope="col">Patient Id</tr><br>
+                <tr scope="col">Patient Name</tr><br>
+                <tr scope="col">Age</tr><br>
+                <tr scope="col">Gender</tr><br>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class="tab" style="padding-left: 250px; margin-top: -148px; margin-bottom: 100px;">
+        {% for i in range(0, 4) %}
+            {{ data[i] }}<br>
+        {% endfor %}
+    </div>
+
+    <form class="col-4 form-horizontal" id="patient_form" method="POST" action="http://127.0.0.1:5000/bst" enctype="multipart/form-data">
+        <div class="form-group col">
+            <label for="rbc_images"><b>Upload Blood Smear Images</b></label>
+            <input type="hidden" class="form-control" id="patient_id_hidden" name="patient_id_hidden" value="{{ data[0] }}" required>
+            <input type="file" name="rbc_images[]" multiple class="form-control-file" id="rbc_images" accept=".png, .jpg, .jpeg" required>
+        </div>
+        <div class="form-group col">
+            <button style="background-color: #03abff;" type="submit" class="btn btn-primary" onclick="startStopwatch()">Predict</button>
+        </div>
+    </form>
+    {% endif %}
+</div>
+
+<!-- Stopwatch HTML -->
+<div id="stopwatch">
+    <div id="time">00:00:00</div>
+    <button id="stopwatch-start">Start</button>
+    <button id="stopwatch-stop">Stop</button>
+    <button id="stopwatch-reset">Reset</button>
+</div>
+
+<script>
+    // JavaScript for the stopwatch
+    let startTime, updatedTime, difference, tInterval, running = false;
+    const timeDisplay = document.getElementById('time');
+    
+    function formatTime(ms) {
+        const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((ms / (1000 * 60)) % 60);
+        const seconds = Math.floor((ms / 1000) % 60);
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+    
+    function startStopwatch() {
+        if (!running) {
+            running = true;
+            startTime = new Date().getTime();
+            tInterval = setInterval(() => {
+                updatedTime = new Date().getTime();
+                difference = updatedTime - startTime;
+                timeDisplay.textContent = formatTime(difference);
+            }, 1000);
+        }
+    }
+    
+    function stopStopwatch() {
+        if (running) {
+            clearInterval(tInterval);
+            running = false;
+        }
+    }
+    
+    function resetStopwatch() {
+        clearInterval(tInterval);
+        running = false;
+        timeDisplay.textContent = '00:00:00';
+    }
+
+    document.getElementById('stopwatch-start').addEventListener('click', startStopwatch);
+    document.getElementById('stopwatch-stop').addEventListener('click', stopStopwatch);
+    document.getElementById('stopwatch-reset').addEventListener('click', resetStopwatch);
+
+    // Start the stopwatch on form submit
+    function startStopwatchOnSubmit() {
+        if (!running) {
+            startStopwatch();
+        }
+    }
+    
+    document.querySelector('form').addEventListener('submit', startStopwatchOnSubmit);
+</script>
+{% endblock content %}

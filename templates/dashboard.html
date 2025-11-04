@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+  h6{
+    padding-top : 50px;
+  }
+  body
+  {
+    background: radial-gradient( #FFFFFF,#87cefa);
+    /*background-color:#a1d2fa*/
+  }
+</style>
+<div class="col-10">
+    <h3>Classification of WBCs & RBCs</h3>
+    <h5>Automated Blood Smear Image Analysis Tool</h5>
+    <br><br>
+    <!-- <table class="table" style="margin-top: 15px;">
+        <thead  class="thead-dark">
+          <tr>
+            <th scope="col">No. of Patients</th>
+            <th scope="col">No. of Images</th>
+            <th scope="col">Model Accuracy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{patients_no}}</td>
+            <td>1000</td>
+            <td>85%</td>
+          </tr>
+        </tbody>
+      </table> -->
+    <div>
+      <p>This is a research project carried out for the Collaborative work of Department of Computer Science, Madras Christian College (MCC) with the Department of Transfusion Medicine and Immunohematology, Christian Medical College (CMC), Vellore, South India. Here haematologists currently use the manual technique of microscopic examination of blood smears in order to detect the RBCs and their count. Manual System has a lot of Disadvantages. So, an automated system which uses Transfer Learning is used to classify the types of WBC and RBC present in the blood smear Image. In this way, the report generation of the patient is made easier, efficient and a lot of time is saved. </p>
+        <h6>Transfer Learning</h6>
+        <p style="text-align: justify;">Transfer learning is a machine learning method where a model developed for a task is reused as the starting point for a model on a second task.
+          It is a popular approach in deep learning where pre-trained models are used as the starting point on computer vision and natural language processing tasks given the vast compute and time resources required to develop neural network models on these problems and from the huge jumps in skill that they provide on related problems.
+          </p><br>
+          <p>VGG16 is a convolution neural net (CNN ) architecture which is considered to be one of the excellent vision model architecture till date. Most unique thing about VGG16 is that instead of having a large number of hyper-parameter they focused on having convolution layers of 3x3 filter with a stride 1 and always used same padding and maxpool layer of 2x2 filter of stride 2. 
+            It follows this arrangement of convolution and max pool layers consistently throughout the whole architecture. In the end it has 2 FC(fully connected layers) followed by a softmax for output. The 16 in VGG16 refers to it has 16 layers that have weights.
+            </p>
+            
+        <!-- <h5>The ML Model</h5>
+        <p style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus varius ac ex non feugiat. Ut in bibendum lectus, ut ornare nunc. Donec elementum odio vitae lacinia lacinia. Nunc at odio dui. Maecenas sollicitudin, enim sed scelerisque ultrices, dolor ipsum sollicitudin diam, ac eleifend mi elit lacinia lorem. Sed fringilla molestie leo. Nullam dignissim dictum cursus. Donec condimentum cursus tortor, aliquet ultricies lorem consectetur eget. Aliquam accumsan ex a eleifend pellentesque. Donec porttitor arcu mi, ut elementum urna cursus sed. Fusce rutrum gravida consequat. Suspendisse ultrices nulla sed magna euismod, a aliquam felis aliquet. Vestibulum et dui pharetra, mollis nisi at, malesuada leo.</p>
+        <h5>Result</h5>
+        <p style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus varius ac ex non feugiat.</p> -->
+
+    </div>
+
+</div>
+
+{% endblock content %}

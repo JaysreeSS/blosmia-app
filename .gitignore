@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.env/
+
+# Flask specific
+instance/
+*.db
+*.sqlite3
+
+# Deep Learning models (optional, if large)
+*.h5
+*.pt
+*.pth
+*.pkl
+models/
+
+# Images (optional, if you want to upload only some)
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.gif
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
