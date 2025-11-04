@@ -58,7 +58,6 @@ The main objectives of BLOSMIA’s current development phase are:
 * ⚖️ **Identify the most efficient deep learning model** through comparative analysis.
 * 💾 **Optimize database design** for faster and more reliable data handling.
 * 🔗 **Build modular APIs** to enable smooth integration and system scalability.
-* ☁️ **Deploy on AWS** for secure, real-time, multi-user cloud access.
 * ⏱️ **Reduce manual effort** and accelerate diagnostic reporting.
 
 ---
